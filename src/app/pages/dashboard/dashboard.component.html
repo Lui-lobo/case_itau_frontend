@@ -1,0 +1,11 @@
+<h1>Olá, {{ user?.nome }} 👋</h1>
+
+<section class="cards">
+  <div class="card" *ngFor="let card of cards">
+    <mat-icon>{{ card.icon }}</mat-icon>
+    <div>
+      <h3>{{ card.title }}</h3>
+      <p>{{ card.description }}</p>
+    </div>
+  </div>
+</section>

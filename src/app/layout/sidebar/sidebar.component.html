@@ -1,0 +1,22 @@
+<aside class="sidebar" [class.collapsed]="collapsed">
+  <div class="sidebar-header">
+    <button mat-icon-button (click)="toggleSidebar()" class="toggle-btn">
+      <mat-icon>{{ collapsed ? 'menu_open' : 'menu' }}</mat-icon>
+    </button>
+    <span *ngIf="!collapsed" class="sidebar-title">Banco Modular</span>
+  </div>
+
+  <mat-nav-list>
+    <a
+      mat-list-item
+      *ngFor="let item of menuItems"
+      [routerLink]="item.route"
+      routerLinkActive="active-link"
+      [matTooltip]="collapsed ? item.label : ''"
+      matTooltipPosition="right"
+    >
+      <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+      <span *ngIf="!collapsed">{{ item.label }}</span>
+    </a>
+  </mat-nav-list>
+</aside>

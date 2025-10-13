@@ -1,0 +1,134 @@
+/* ===============================
+   Brand tokens (CSS puros)
+   =============================== */
+:root {
+  --brand-primary: #ff6600;   /* laranja Itaú */
+  --brand-dark:    #002d62;   /* azul escuro */
+  --brand-surface: #f4f4f4;   /* cinza claro de fundo */
+  --brand-white:   #ffffff;
+  --brand-text:    #0f172a;   /* slate-900-ish */
+}
+
+/* ===============================
+   Base global
+   =============================== */
+* { box-sizing: border-box; }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  color: var(--brand-text);
+  background: var(--brand-surface);
+}
+
+/* Gradiente “Itaú” para páginas de auth */
+.auth-container {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(120deg, var(--brand-dark), var(--brand-primary));
+}
+
+/* Card central (funciona com <mat-card> e div normal) */
+.auth-card, .mat-mdc-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--brand-white);
+  border-radius: 14px !important;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.18);
+}
+.auth-card h2, .mat-mdc-card h2 {
+  margin: 0 0 16px;
+  text-align: center;
+  color: var(--brand-dark);
+  font-weight: 800;
+}
+
+/* Layout dos campos */
+.full-width { width: 100%; }
+form .full-width { margin-bottom: 12px; }
+
+/* ===============================
+   Ajustes simples para Angular Material (CSS only)
+   Sem theming API – apenas classes MDC/Material
+   =============================== */
+
+/* Botão primário */
+.mat-mdc-raised-button.mat-primary,
+.mdc-button--raised.mat-mdc-button-base.mat-primary {
+  background-color: var(--brand-primary) !important;
+  color: var(--brand-white) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 12px rgba(255,102,0,.28);
+}
+.mat-mdc-raised-button.mat-primary:hover {
+  filter: brightness(0.95);
+}
+
+/* Links auxiliares */
+.link { text-align: center; margin-top: 8px; }
+.link a {
+  color: var(--brand-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.link a:hover { text-decoration: underline; }
+
+/* Campos (outline) – cor do foco/label/underline */
+.mat-mdc-form-field {
+  width: 100%;
+}
+.mat-mdc-form-field .mdc-notched-outline__leading,
+.mat-mdc-form-field .mdc-notched-outline__notch,
+.mat-mdc-form-field .mdc-notched-outline__trailing {
+  border-color: #d0d5dd; /* borda neutra */
+}
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--brand-primary) !important;
+}
+.mat-mdc-form-field.mat-focused .mdc-floating-label,
+.mat-mdc-form-field .mdc-floating-label--float-above {
+  color: var(--brand-dark) !important;
+}
+
+/* Mensagens de erro */
+.mdc-text-field--invalid ~ .mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-error,
+.mat-mdc-form-field-error {
+  color: #b42318 !important;  /* vermelho legível */
+  font-weight: 500;
+}
+
+/* Inputs internos */
+.mdc-text-field__input, .mat-mdc-input-element {
+  caret-color: var(--brand-primary);
+}
+
+/* Botões “text” (se usar) */
+.mat-mdc-button.mat-primary {
+  color: var(--brand-primary) !important;
+}
+
+/* Acessibilidade mínima em foco */
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--brand-primary) 55%, white);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ===============================
+   Utilitários
+   =============================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+.shadow-soft { box-shadow: 0 8px 20px rgba(0,0,0,.12); }
+.round-xl { border-radius: 14px; }
+.bg-brand { background: var(--brand-primary); color: var(--brand-white); }
+.text-brand { color: var(--brand-primary); }
+.text-dark  { color: var(--brand-dark); }

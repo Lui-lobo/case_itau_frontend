@@ -1,0 +1,50 @@
+<div class="header">
+  <h2>Clientes</h2>
+  <button mat-raised-button color="primary" (click)="openCreateDialog()">
+    <mat-icon>add</mat-icon> Novo Cliente
+  </button>
+</div>
+
+<table mat-table [dataSource]="clientes" class="mat-elevation-z2">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let c">{{ c.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="nome">
+    <th mat-header-cell *matHeaderCellDef>Nome</th>
+    <td mat-cell *matCellDef="let c">{{ c.nome }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let c">{{ c.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="saldo">
+    <th mat-header-cell *matHeaderCellDef>Saldo</th>
+    <td mat-cell *matCellDef="let c">R$ {{ c.saldo | number: '1.2-2' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let c">
+      <button mat-icon-button color="primary" (click)="openTransactionDialog(c, 'depositar')" matTooltip="Depositar">
+        <mat-icon>arrow_downward</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="openTransactionDialog(c, 'sacar')" matTooltip="Sacar">
+        <mat-icon>arrow_upward</mat-icon>
+      </button>
+      <button mat-icon-button (click)="desativar(c)" matTooltip="Desativar">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<div class="empty" *ngIf="!clientes.length && !loading">
+  Nenhum cliente encontrado.
+</div>

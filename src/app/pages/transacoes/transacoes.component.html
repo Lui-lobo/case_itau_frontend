@@ -1,0 +1,96 @@
+<div class="transacoes-container">
+  <h2>Transações Globais</h2>
+
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>ID do Cliente</mat-label>
+      <input matInput [formControl]="filtroCliente" placeholder="Ex: 1" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo</mat-label>
+      <mat-select [formControl]="filtroTipo">
+        <mat-option value="">Todas</mat-option>
+        <mat-option value="credito">Créditos</mat-option>
+        <mat-option value="debito">Débitos</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-stroked-button color="primary" (click)="loadTransacoes()">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+
+    <button mat-button (click)="limparFiltros()">
+      <mat-icon>refresh</mat-icon> Limpar
+    </button>
+  </div>
+
+  <mat-card *ngIf="meta" class="meta-card">
+    <mat-card-content>
+      <div class="meta-grid">
+        <div>
+          <strong>ID Cliente:</strong>
+          <p>{{ meta.clienteId }}</p>
+        </div>
+        <div>
+          <strong>Total Transações:</strong>
+          <p>{{ meta.total }}</p>
+        </div>
+        <div>
+          <strong>Saldo Atual:</strong>
+          <p>R$ {{ meta.saldoAtual }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="loading" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <table mat-table [dataSource]="transacoes" class="mat-elevation-z2" *ngIf="!loading && transacoes.length">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let t">{{ t.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="tipo">
+      <th mat-header-cell *matHeaderCellDef>Tipo</th>
+      <td mat-cell *matCellDef="let t" [class.credito]="t.tipo === 'credito'" [class.debito]="t.tipo === 'debito'">
+        {{ t.tipo | titlecase }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valor">
+      <th mat-header-cell *matHeaderCellDef>Valor</th>
+      <td mat-cell *matCellDef="let t">R$ {{ t.valor | number: '1.2-2' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="data">
+      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <td mat-cell *matCellDef="let t">{{ t.createdAt | date: 'short' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <!-- ✅ Controles de paginação -->
+  <div *ngIf="!loading && transacoes.length" class="pagination">
+    <button mat-stroked-button color="primary" (click)="paginaAnterior()" [disabled]="meta.pagina <= 1">
+      <mat-icon>chevron_left</mat-icon> Anterior
+    </button>
+
+    <span class="page-info">
+      Página {{ meta.pagina }} de {{ totalPaginas }}
+    </span>
+
+    <button mat-stroked-button color="primary" (click)="proximaPagina()" [disabled]="meta.pagina >= totalPaginas">
+      Próxima <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="!loading && !transacoes.length" class="empty">
+    Nenhuma transação encontrada.
+  </div>
+</div>

@@ -1,0 +1,74 @@
+.sidebar {
+  position: fixed;
+  top: 64px; /* altura do header */
+  left: 0;
+  width: 230px;
+  height: calc(100vh - 64px);
+  background: var(--brand-dark, #002d62);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 100; /* garante que fica acima do conteúdo */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+
+  &.collapsed {
+    width: 70px;
+
+    .sidebar-title {
+      display: none;
+    }
+
+    a.mat-list-item {
+      justify-content: center;
+      padding: 0;
+    }
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  justify-content: space-between;
+
+  .sidebar-title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+
+  .toggle-btn mat-icon {
+    color: #ff6600;
+  }
+}
+
+/* Lista */
+mat-nav-list {
+  flex: 1;
+  padding-top: 0.5rem;
+}
+
+/* Links */
+a.mat-list-item {
+  color: #fff !important;
+  border-radius: 6px;
+  margin: 4px 10px;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+a.mat-list-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(3px);
+}
+
+/* Link ativo */
+.active-link {
+  background: #ff6600 !important;
+  color: white !important;
+
+  mat-icon {
+    color: white !important;
+  }
+}

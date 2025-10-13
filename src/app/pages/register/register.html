@@ -1,0 +1,45 @@
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <h2>Registrar</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome completo</mat-label>
+        <input matInput type="text" formControlName="name" />
+        <mat-error *ngIf="registerForm.get('name')?.hasError('required')">
+          O nome é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+          O email é obrigatório
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+          Email inválido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+          A senha é obrigatória
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+          A senha deve ter no mínimo 6 caracteres
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="full-width" type="submit">
+        Criar conta
+      </button>
+
+      <p class="link">
+        Já possui conta? <a routerLink="/login">Entre aqui</a>
+      </p>
+    </form>
+  </mat-card>
+</div>

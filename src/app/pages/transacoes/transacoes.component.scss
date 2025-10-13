@@ -1,0 +1,82 @@
+.transacoes-container {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+  color: var(--brand-dark, #002d62);
+  margin-bottom: 1.5rem;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+mat-form-field {
+  width: 200px;
+}
+
+.meta-card {
+  margin-bottom: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+
+  .meta-grid {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    div {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-weight: bold;
+      color: var(--brand-dark, #002d62);
+    }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.credito {
+  color: #00a152;
+  font-weight: bold;
+}
+
+.debito {
+  color: #c62828;
+  font-weight: bold;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+
+  .page-info {
+    font-weight: 500;
+    color: var(--brand-dark, #002d62);
+  }
+}
+
+.empty {
+  text-align: center;
+  color: #666;
+  margin-top: 2rem;
+}
