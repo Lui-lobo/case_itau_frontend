@@ -1,59 +1,47 @@
-# BancoModular
+# 🏦 Banco Modular — Frontend Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
+Aplicação frontend desenvolvida em **Angular (v19+)**, integrada a uma **API modular bancária** construída em **NestJS**.  
+O sistema permite gerenciar **clientes, contas, depósitos, saques e transações**, simulando o funcionamento de um ambiente bancário real, com autenticação JWT e controle de sessão.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Tecnologias Utilizadas
 
-```bash
-ng serve
-```
+- ⚡ **Angular 19+**
+- 🎨 **Angular Material**
+- 💻 **TypeScript**
+- 🔄 **RxJS / Observables**
+- 🧩 **API RESTful (NestJS)**
+- 💅 **SCSS (estilo Itaú)**
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## ⚙️ Funcionalidades Principais
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 🔐 Autenticação
+- Login e registro de usuários via `AuthController`
+- Armazenamento de `accessToken` e `user` no `localStorage`
+- Headers automáticos (`x-client-id` e `x-client-secret`) em todas as requisições
 
-```bash
-ng generate component component-name
-```
+### 👥 Gestão de Clientes
+- Listagem completa (`GET /api/v1/clientes`)
+- Criação de novo cliente via modal
+- Edição de cliente existente (nome e e-mail)
+- Desativação de clientes (`DELETE /api/v1/clientes/:id`)
+- Atualização automática da tabela após qualquer operação
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 💸 Transações
+- Depósito (`POST /api/v1/clientes/:id/depositar`)
+- Saque (`POST /api/v1/clientes/:id/sacar`)
+- Listagem de transações com paginação e filtros (`GET /api/v1/clientes/:id/transacoes`)
 
-```bash
-ng generate --help
-```
+### 🧭 Interface
+- Layout fixo com **Header + Sidebar**
+- Navegação por rotas protegidas (AuthGuard)
+- Responsividade e design inspirado no **Banco Itaú**
+- Feedback visual com **SnackBars** de sucesso/erro
 
-## Building
+---
 
-To build the project run:
+## 📂 Estrutura do Projeto
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
