@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
 interface User {
@@ -20,6 +20,19 @@ export class AuthService {
   private baseUrl = 'http://localhost:8080/api/v1/auth'; // ajuste conforme seu backend
 
   constructor(private http: HttpClient) {}
+
+  // ✅ Registro de novo usuário (auth/register)
+  register(nome: string, email: string, senha: string, clientId: Number): Observable<any> {
+    const headers = new HttpHeaders({
+      'x-client-id': 'default-client',
+      'x-client-secret': 'default-secret-key',
+    });
+
+    const stringSenha = String(senha);
+    const data = { nome, email, password: stringSenha, clientId };
+
+    return this.http.post(`${this.baseUrl}/register`, data, { headers });
+  }
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { email, password }).pipe(

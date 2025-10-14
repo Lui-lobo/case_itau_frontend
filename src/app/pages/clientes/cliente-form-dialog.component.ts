@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, Validators, FormGroup } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ClientesService } from './clientes.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../../core/services/auth';
 
 @Component({
   selector: 'app-cliente-form-dialog',
@@ -18,9 +19,11 @@ import { ClientesService } from './clientes.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
   ],
   template: `
-    <h2 mat-dialog-title>Novo Cliente</h2>
+    <h2 mat-dialog-title>Novo Usuário</h2>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-form">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nome</mat-label>
@@ -39,7 +42,9 @@ import { ClientesService } from './clientes.service';
 
       <div class="actions">
         <button mat-button type="button" (click)="close()">Cancelar</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Salvar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          Salvar
+        </button>
       </div>
     </form>
   `,
@@ -51,11 +56,13 @@ import { ClientesService } from './clientes.service';
         gap: 1rem;
         width: 100%;
       }
+
       .actions {
         display: flex;
         justify-content: flex-end;
         gap: 0.5rem;
       }
+
       .full-width {
         width: 100%;
       }
@@ -64,30 +71,53 @@ import { ClientesService } from './clientes.service';
 })
 export class ClienteFormDialogComponent {
   form: FormGroup;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ClienteFormDialogComponent>,
-    private clientes: ClientesService
+    private auth: AuthService, // ✅ substitui ClientesService
+    private snackBar: MatSnackBar
   ) {
-    // ✅ Agora inicializa aqui, após o Angular injetar o fb
     this.form = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      senha: ['', Validators.required],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-    const formData = {
-      nome: this.form.value.nome!,
-      email: this.form.value.email!,
-      senha: this.form.value.senha!,
-    };
+    const { nome, email, senha } = this.form.value;
+    this.loading = true;
 
-    this.clientes.create(formData).subscribe(() => this.dialogRef.close(true));
+    // ✅ Chama a API correta de registro
+    this.auth.register(nome, email, senha, 1).subscribe({
+      next: () => {
+        this.loading = false;
+        this.snackBar.open('Usuário criado com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+        this.dialogRef.close(true);
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Erro ao registrar usuário', err);
+        this.snackBar.open(
+          err.error?.message || 'Falha ao criar usuário.',
+          'Fechar',
+          {
+            duration: 4000,
+            panelClass: ['error-snackbar'],
+          }
+        );
+      },
+    });
   }
 
   close() {

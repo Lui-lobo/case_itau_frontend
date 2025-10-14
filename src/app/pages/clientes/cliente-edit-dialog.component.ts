@@ -5,7 +5,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ClientesService } from './clientes.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ClientesService, Cliente } from './clientes.service';
 
 @Component({
   selector: 'app-cliente-edit-dialog',
@@ -17,6 +18,7 @@ import { ClientesService } from './clientes.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
   ],
   template: `
     <h2 mat-dialog-title>Editar Cliente</h2>
@@ -24,12 +26,12 @@ import { ClientesService } from './clientes.service';
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-form">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nome</mat-label>
-        <input matInput formControlName="nome" required />
+        <input matInput formControlName="nome" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email" required />
+        <input matInput formControlName="email" />
       </mat-form-field>
 
       <div class="actions">
@@ -48,13 +50,11 @@ import { ClientesService } from './clientes.service';
         gap: 1rem;
         width: 100%;
       }
-
       .actions {
         display: flex;
         justify-content: flex-end;
         gap: 0.5rem;
       }
-
       .full-width {
         width: 100%;
       }
@@ -65,11 +65,13 @@ export class ClienteEditDialogComponent {
   form: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ClienteEditDialogComponent>,
-    private clientes: ClientesService
+    private clientesService: ClientesService,
+    private snackBar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: Cliente
   ) {
+    // Preenche o form com os dados do cliente recebido
     this.form = this.fb.group({
       nome: [data.nome, Validators.required],
       email: [data.email, [Validators.required, Validators.email]],
@@ -84,9 +86,25 @@ export class ClienteEditDialogComponent {
       email: this.form.value.email!,
     };
 
-    this.clientes.update(this.data.id, updateData).subscribe({
-      next: () => this.dialogRef.close(true),
-      error: (err) => console.error('Erro ao atualizar cliente', err),
+    this.clientesService.update(this.data.id, updateData).subscribe({
+      next: () => {
+        this.snackBar.open('Cliente atualizado com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+        this.dialogRef.close(true);
+      },
+      error: (err) => {
+        console.error('Erro ao atualizar cliente', err);
+        this.snackBar.open(
+          err.error?.message || 'Falha ao atualizar cliente.',
+          'Fechar',
+          {
+            duration: 4000,
+            panelClass: ['error-snackbar'],
+          }
+        );
+      },
     });
   }
 

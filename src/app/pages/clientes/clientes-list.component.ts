@@ -7,6 +7,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ClientesService, Cliente } from './clientes.service';
 import { ClienteFormDialogComponent } from './cliente-form-dialog.component';
 import { ClienteTransactionDialogComponent } from './cliente-transaction-dialog.component';
+import { ClienteEditDialogComponent } from './cliente-edit-dialog.component';
 
 @Component({
   selector: 'app-clientes-list',
@@ -49,6 +50,17 @@ export class ClientesListComponent implements OnInit {
   openCreateDialog() {
     const dialogRef = this.dialog.open(ClienteFormDialogComponent, {
       width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.loadClientes();
+    });
+  }
+
+  openEditDialog(cliente: Cliente) {
+    const dialogRef = this.dialog.open(ClienteEditDialogComponent, {
+      width: '400px',
+      data: cliente,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

@@ -24,7 +24,7 @@ export class ClientesService {
     return this.http.get<Cliente>(`${this.baseUrl}/${id}`);
   }
 
-  create(data: { nome: string; email: string; senha: string }): Observable<Cliente> {
+  create(data: { nome: string; email: string; senha: string, clientId: Number }): Observable<Cliente> {
     return this.http.post<Cliente>(this.baseUrl, data);
   }
 
